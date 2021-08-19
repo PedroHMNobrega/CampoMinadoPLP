@@ -1,0 +1,2 @@
+-- Install
+-- cabal install threepenny-gui -fbuildExamples
