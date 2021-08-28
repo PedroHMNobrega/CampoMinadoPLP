@@ -1,4 +1,3 @@
-
 import Graphics.UI.Threepenny as UI
 import Style
 import Espalhamento
@@ -7,30 +6,32 @@ import Prelude as P
 main :: IO ()
 main = startGUI config gui
 
-    
 gui :: Window -> UI ()
-gui w = do
+gui w = do 
 
-    let startGame :: Int-> [(Int, Bool)] -> Int -> UI()
-        startGame n grid 0 = return ()
-        startGame n grid index = do
+    let startGame :: [(Int, Bool)] -> Int -> UI()
+        startGame grid 0 = return ()
+        startGame grid index = do
 
+            
             btn <- mkElement "button"
                 # set style unknownSquareCss
 
-            c <- UI.getElementsByClassName w "container"
+            c <- UI.getElementsByClassName w "container" 
+
             element (head c) #+ [element btn]
 
+
             on UI.click btn $ \_ -> do
-                
-                -- let x = P.div index n
-                -- let y = mod index n
-                -- vis eh uma lista [Bool]
-                -- let vis = espalhamento x y n n (getNum grid) (getVis grid)                
 
-                -- Falta criar a funcao de update dos quadrados
+                let x = (P.div index 9)
+                let y = (mod index 9)
 
-            startGame n grid (index-1)
+                let vis = espalhamento x y 9 9 (getNum grid) (getVis grid)
+                set' style knownSquareCss btn 
+
+            startGame grid (index-1)
+
 
     getBody w #+ [h1 # set text "Campo Minado"]
         # set style bodyCss
@@ -42,7 +43,7 @@ gui w = do
     -- Medio 16X16 e 40 Minas
     medium <- mkElement "button" # set text "Médio"
             # set style difCss
-    -- Difícil 25x25 e 99 Minas
+    -- Difícil 16X30 e 99 Minas
     hard <- mkElement "button" # set text "Difícil"
             # set style difCss
 
@@ -57,55 +58,50 @@ gui w = do
         # set style containerCss
     getBody w #+ [element container]
 
-    --Realizei uma reducao, de 45 para 40 no tamanho do quadrado
-    on UI.click easy $ \ _ -> do
-        c <- UI.getElementsByClassName w "container"
+
+    on UI.click easy $ \ _ -> do    
+        c <- UI.getElementsByClassName w "container" 
         element (head c) #set style [("width", "360px")] --16 * 40
-        let vis = replicate 81 False
         let game = createGame 81 []
-        startGame 9 game 81
+        startGame game 81
         return()
 
-    on UI.click medium $ \ _ -> do
-        c <- UI.getElementsByClassName w "container"
+    on UI.click medium $ \ _ -> do        
+        c <- UI.getElementsByClassName w "container" 
         element (head c) #set style [("width", "640px")] --16 * 40
         let game = createGame 256 []
-        startGame 16 game 256
+        startGame game 256
         return()
 
-    on UI.click hard $ \ _ -> do
-        c <- UI.getElementsByClassName w "container"
+    
+    on UI.click hard $ \ _ -> do        
+        c <- UI.getElementsByClassName w "container" 
         element (head c) #set style [("width", "1000px")] --25 * 40
         let game = createGame 625 []
-        startGame 25 game 625
+        startGame game 625
         return()
 
 
     return ()
 
-
--- espalhamento recebe duas listas , [Int] e [Bool]
--- as duas funcoes abaixo servem para separar a lista do tipo [(Int,Bool)]
 getNum :: [(a,b)] -> [a]
 getNum [] = []
-getNum (x:xs) = fst x : getNum xs
+getNum (x:xs) = [fst x] ++ getNum xs
 
 getVis :: [(a,b)] -> [b]
 getVis [] = []
-getVis (x:xs) = snd x : getVis xs
-
+getVis (x:xs) = [snd x] ++ getVis xs
 
 createGame :: Int -> [(Int, Bool)] -> [(Int, Bool)]
 createGame 0 l = l
 createGame n l = createGame (n-1) (l ++ [(0, False)])
 
--- Tentativa falha de remover os quadrados extras criado
--- ao mudar de dificuldade do game
 erase :: [Element] -> UI ()
 erase [] = return()
 erase [x] = UI.delete x
 erase (x:xs) = do
     erase xs
-    UI.delete x
+    UI.delete x 
+
 
 config = defaultConfig { jsLog= \ _ -> return ()}
