@@ -5,7 +5,7 @@ import GerarBombas
 import ContaBombas
 import Prelude as P
 import qualified Graphics.UI.Threepenny.Core as UI
-import System.Random (getStdGen, StdGen)
+import System.Random (getStdGen, StdGen, newStdGen)
 
 main :: IO ()
 main = startGUI config gui
@@ -13,7 +13,6 @@ main = startGUI config gui
 gui :: Window -> UI ()
 gui w = do 
     gen <- getStdGen
-
     let startGame :: [(Int, Bool)] -> Int -> Int -> Int -> UI()
         startGame grid 0 m n = return ()
         startGame grid index m n = do
@@ -21,6 +20,7 @@ gui w = do
             let bombStr = show bombs
 
             btn <- mkElement "button"
+                #. show (index-1)
                 #+ [p # set text bombStr # set style numberCss]
                 # set style unknownSquareCss
 
@@ -29,14 +29,35 @@ gui w = do
             element (head c) #+ [element btn]
 
             on UI.click btn $ \_ -> do
-                --let x = P.div index m
-                --let y = mod index n
-                --let vis = espalhamento x y m n (getNum grid) (getVis grid)
-                set' style knownSquareCss  btn 
-                set' style (getStyle bombs isBomb) btn 
+                if isBomb
+                    then gameOver w
+                else do
+                    let x = P.div index m
+                    let y = mod index n
+                    let vis = espalhamento x y m n (getNum grid) (getBombs grid) (getVis (length grid) [])
+
+                    set' style knownSquareCss btn 
+                    set' style (getStyle bombs isBomb) btn 
+
+                    showSquares vis ((m*n)-1) w grid
 
             startGame grid (index-1) m n
 
+    let newGame :: Int -> Int -> Int -> UI()
+        newGame n m numBombs = do
+            gen <- newStdGen
+            refreshContainer "container" w
+
+            c <- UI.getElementsByClassName w "container" 
+            let size = show (n * 35) ++ "px"
+            element (head c) #set style [("width", size)] --9 * 35
+
+            let bombs = geraBombas gen (n*m) numBombs (-1)
+            let bombCount = contaBombas n m bombs 1
+
+            let game = generateGame (n*m) bombs bombCount []
+            startGame game (n*m) n m
+            return()
 
     getBody w #+ [h1 # set text "Campo Minado"]
         # set style bodyCss
@@ -63,37 +84,16 @@ gui w = do
         # set style containerCss
     getBody w #+ [element container]
 
-
     on UI.click easy $ \ _ -> do    
-        refreshContainer "container" w
-
-        c <- UI.getElementsByClassName w "container" 
-        element (head c) #set style [("width", "315px")] --9 * 35
-
-        let bombs = geraBombas gen 81 10
-        let bombCount = contaBombas 9 9 bombs 1
-
-        let game = generateGame 81 bombs bombCount []
-        startGame game 81 9 9
+        newGame 9 9 10
         return()
 
     on UI.click medium $ \ _ -> do    
-        refreshContainer "container" w
-
-        c <- UI.getElementsByClassName w "container" 
-        element (head c) #set style [("width", "560px")] --16 * 35
-        let game = createGame 256 []
-        startGame game 256 16 16
+        newGame 16 16 40
         return()
 
-    
     on UI.click hard $ \ _ -> do    
-        refreshContainer "container" w
-
-        c <- UI.getElementsByClassName w "container" 
-        element (head c) #set style [("width", "700px")] --20 * 35
-        let game = createGame 400 []
-        startGame game 400 20 20
+        newGame 20 20 100
         return()
 
     return ()
@@ -102,9 +102,13 @@ getNum :: [(a,b)] -> [a]
 getNum [] = []
 getNum (x:xs) = [fst x] ++ getNum xs
 
-getVis :: [(a,b)] -> [b]
-getVis [] = []
-getVis (x:xs) = [snd x] ++ getVis xs
+getBombs :: [(a,b)] -> [b]
+getBombs [] = []
+getBombs (x:xs) = [snd x] ++ getBombs xs
+
+getVis :: Int -> [Bool] -> [Bool]
+getVis 0 vis = vis
+getVis n vis = [False] ++ getVis (n-1) vis
 
 createGame :: Int -> [(Int, Bool)] -> [(Int, Bool)]
 createGame 0 l = l
@@ -123,6 +127,21 @@ refreshContainer className w = do
     getBody w #+ [element container]
     return ()
 
+showSquares :: [Bool] -> Int -> Window -> [(Int, Bool)] -> UI ()
+showSquares squares (-1) w grid = return()
+showSquares squares idx w grid = do
+    let (bombs, isBomb) = grid !! idx
+    curr <- UI.getElementsByClassName w (show idx)
+    let btn = head curr
+    if squares !! idx
+    then do
+        set' style knownSquareCss btn
+        set' style (getStyle bombs isBomb) btn
+        showSquares squares (idx-1) w grid
+    else
+        showSquares squares (idx-1) w grid
+
+
 getStyle :: Int -> Bool -> [(String, String)]
 getStyle bombs True = bombCss
 getStyle bombs False
@@ -135,5 +154,12 @@ getStyle bombs False
     | bombs == 7 = seteCss
     | bombs == 8 = oitoCss
     | otherwise = []
+
+gameOver :: Window -> UI()
+gameOver w = do
+    refreshContainer "container" w
+    c <- UI.getElementsByClassName w "container" 
+    element (head c) #+ [h1 # set text "Game Over!" # set style gameOverCss]
+    return ()
 
 config = defaultConfig { jsLog= \ _ -> return ()}

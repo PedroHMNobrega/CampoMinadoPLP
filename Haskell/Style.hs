@@ -70,3 +70,6 @@ oitoCss = [("color","#e91e63")]
 
 bombCss :: [(String, String)]
 bombCss = [("background","crimson"), ("color", "crimson")]
+
+gameOverCss :: [(String, String)]
+gameOverCss = [("color", "crimson"), ("margin-top", "40px"), ("font-size", "50px")]
