@@ -25,8 +25,48 @@ difCss = [
 containerCss :: [(String, String)]
 containerCss = [("margin", "0 auto")]
 
+numberCss :: [(String, String)]
+numberCss = [
+    ("margin", "0"),
+    ("font-weight", "bold"),
+    ("font-size", "20px")]
+
 unknownSquareCss :: [(String, String)]
-unknownSquareCss = [("background","#77ccfd"), ("width", "35px"), ("height", "35px"), ("border", "3px solid #31373c"), ("padding", "0"), ("cursor", "pointer")]
+unknownSquareCss = [
+    ("background","#77ccfd"), 
+    ("width", "35px"), 
+    ("height", "35px"), 
+    ("border", "3px solid #31373c"), 
+    ("padding", "0"), 
+    ("cursor", "pointer"),
+    ("color", "#77ccfd")]
 
 knownSquareCss :: [(String, String)]
-knownSquareCss = [("background","#fafafc")]
+knownSquareCss = [("background","#fafafc"), ("color", "#fafafc")]
+
+umCss :: [(String, String)]
+umCss = [("color","blue")]
+
+doisCss :: [(String, String)]
+doisCss = [("color","green")]
+
+tresCss :: [(String, String)]
+tresCss = [("color","red")]
+
+quatroCss :: [(String, String)]
+quatroCss = [("color","black")]
+
+cincoCss :: [(String, String)]
+cincoCss = [("color","#9c27b0")]
+
+seisCss :: [(String, String)]
+seisCss = [("color","#ff5722")]
+
+seteCss :: [(String, String)]
+seteCss = [("color","#795548")]
+
+oitoCss :: [(String, String)]
+oitoCss = [("color","#e91e63")]
+
+bombCss :: [(String, String)]
+bombCss = [("background","crimson"), ("color", "crimson")]
