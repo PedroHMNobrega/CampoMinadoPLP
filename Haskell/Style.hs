@@ -26,7 +26,7 @@ containerCss :: [(String, String)]
 containerCss = [("margin", "0 auto")]
 
 unknownSquareCss :: [(String, String)]
-unknownSquareCss = [("background","#77ccfd"), ("width", "45px"), ("height", "45px"), ("border", "3px solid #31373c"), ("padding", "0"), ("cursor", "pointer")]
+unknownSquareCss = [("background","#77ccfd"), ("width", "35px"), ("height", "35px"), ("border", "3px solid #31373c"), ("padding", "0"), ("cursor", "pointer")]
 
 knownSquareCss :: [(String, String)]
 knownSquareCss = [("background","#fafafc")]
