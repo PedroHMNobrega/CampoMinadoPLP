@@ -4,7 +4,7 @@ import Queue
 import List
 
 espalhamento :: Int -> Int -> Int -> Int -> [Int] -> [Bool] -> [Bool]
-espalhamento x y m n num vis = get_vis (espalhamento_rec m n num (if ((access (x + n*y) num) > 0) then [x + n*y] else [], visitar (x + n*y) vis))
+espalhamento x y m n num vis = get_vis (espalhamento_rec m n num (if ((access (x + n*y) num) > 0) then [] else [x + n*y], visitar (x + n*y) vis))
 
 espalhamento_rec :: Int -> Int -> [Int] -> ([Int], [Bool]) -> ([Int],[Bool])
 espalhamento_rec m n num ([], vis) = ([], vis)
