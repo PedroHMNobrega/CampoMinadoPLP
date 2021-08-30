@@ -73,3 +73,6 @@ bombCss = [("background","crimson"), ("color", "crimson")]
 
 gameOverCss :: [(String, String)]
 gameOverCss = [("color", "crimson"), ("margin-top", "40px"), ("font-size", "50px")]
+
+victoryCss :: [(String, String)]
+victoryCss = [("color", "#46ad4a"), ("margin-top", "40px"), ("font-size", "50px")]
