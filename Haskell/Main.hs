@@ -13,14 +13,15 @@ main = startGUI config gui
 gui :: Window -> UI ()
 gui w = do 
     gen <- getStdGen
+    
     let startGame :: [(Int, Bool)] -> Int -> Int -> Int -> UI()
-        startGame grid 0 m n = return ()
+        startGame grid (-1) m n = return ()
         startGame grid index m n = do
-            let (bombs, isBomb) = grid !! (index - 1)
+            let (bombs, isBomb) = grid !! index
             let bombStr = show bombs
 
             btn <- mkElement "button"
-                #. show (index-1)
+                #. show index
                 #+ [p # set text bombStr # set style numberCss]
                 # set style unknownSquareCss
 
@@ -32,12 +33,13 @@ gui w = do
                 if isBomb
                     then gameOver w
                 else do
-                    let x = P.div index m
-                    let y = mod index n
-                    let vis = espalhamento x y m n (getNum grid) (getBombs grid) (getVis (length grid) [])
+                    let y = P.div index m
+                    let x = mod index n
+                    let vis = espalhamento x y m n (getNum grid) (getVis (length grid) [])
 
                     set' style knownSquareCss btn 
-                    set' style (getStyle bombs isBomb) btn 
+                    set' style (getStyle bombs isBomb) btn
+                    set' value "clique" btn
 
                     showSquares vis ((m*n)-1) w grid
 
@@ -56,7 +58,7 @@ gui w = do
             let bombCount = contaBombas n m bombs 1
 
             let game = generateGame (n*m) bombs bombCount []
-            startGame game (n*m) n m
+            startGame game ((n*m)-1) n m
             return()
 
     getBody w #+ [h1 # set text "Campo Minado"]
