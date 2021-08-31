@@ -27,12 +27,13 @@ gui w = do
                 # set value "false"
 
             c <- UI.getElementsByClassName w "container" 
-
             element (head c) #+ [element btn]
-
-            on UI.click btn $ \_ -> do
-                --TODO: Verificar primeiro clique
+            
+            on UI.focus btn $ \_ -> setBtnFocus index w
+            on UI.blur btn $ \_ -> setBtnBlur index w
+            on UI.keypress btn $ \ key -> do
                 case () of _
+                            | key == 'f' -> showFlag index w
                             | isBomb -> gameOver w
                             | otherwise -> do
                                 let y = P.div index m
@@ -157,12 +158,45 @@ verifySquares idx discovered maxDiscovered w = do
 
     val <- get' value btn
 
-    if val == "true"
-    then do
+    if val == "true" then do
         verifySquares (idx-1) (discovered + 1) maxDiscovered w
     else
         verifySquares (idx-1) discovered maxDiscovered w
 
+showFlag :: Int -> Window -> UI ()
+showFlag idx w = do
+    curr <- UI.getElementsByClassName w (show idx)
+    let btn = head curr
+    btnVal <- get' value btn
+
+    if btnVal == "false" then do
+        set' style flagCss btn
+        set' value "flag" btn
+    else return ()
+
+setBtnFocus :: Int -> Window -> UI ()
+setBtnFocus idx w = do
+    curr <- UI.getElementsByClassName w (show idx)
+    let btn = head curr
+    btnVal <- get' value btn
+
+    if btnVal == "false" || btnVal == "flag"
+        then set' style selectedSquareCss btn
+    else return ()
+
+setBtnBlur :: Int -> Window -> UI ()
+setBtnBlur idx w = do
+    curr <- UI.getElementsByClassName w (show idx)
+    if (length curr) > 0
+        then do
+            let btn = head curr
+            btnVal <- get' value btn
+
+            case () of _
+                        | btnVal == "false" -> set' style unknownSquareCss btn
+                        | btnVal == "flag" -> set' style flagCss btn
+                        | otherwise -> return()
+    else return ()
 
 getStyle :: Int -> Bool -> [(String, String)]
 getStyle bombs True = bombCss

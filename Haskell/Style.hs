@@ -76,3 +76,9 @@ gameOverCss = [("color", "crimson"), ("margin-top", "40px"), ("font-size", "50px
 
 victoryCss :: [(String, String)]
 victoryCss = [("color", "#46ad4a"), ("margin-top", "40px"), ("font-size", "50px")]
+
+flagCss :: [(String, String)]
+flagCss = [("background","crimson"), ("color", "crimson")]
+
+selectedSquareCss :: [(String, String)]
+selectedSquareCss = [("background", "#346886"), ("color", "#346886")]
