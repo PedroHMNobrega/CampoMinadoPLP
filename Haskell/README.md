@@ -78,7 +78,7 @@ localhost:8023
 </p>
         
 <p>
-  <a href="https://github.com/">
-  <img height="80em" width="80em" src=""/>  
+  <a href="https://github.com/HenriqueGalindo">
+  <img height="80em" width="80em" src="https://avatars.githubusercontent.com/u/55746037?v=4"/>  
   <em>Henrique Galindo</em>
 </p>
