@@ -48,8 +48,8 @@ gui w = do
 
             startGame grid (index-1) m n numBombs
 
-    let newGame :: Int -> Int -> Int -> UI()
-        newGame n m numBombs = do
+    let newGame :: Int -> Int -> Int -> Int -> UI()
+        newGame n m numBombs index = do
             gen <- newStdGen
             refreshContainer "container" w
 
@@ -57,11 +57,58 @@ gui w = do
             let size = show (n * 35) ++ "px"
             element (head c) #set style [("width", size)] --9 * 35
 
-            let bombs = geraBombas gen (n*m) numBombs (-1)
+            let bombs = geraBombas gen (n*m) numBombs ((m*n) - index)
             let bombCount = contaBombas n m bombs 1
 
             let game = generateGame (n*m) bombs bombCount []
             startGame game ((n*m)-1) n m numBombs
+
+            -- ---------------------------------------------
+            curr <- UI.getElementsByClassName w (show index)
+            let btn = head curr
+
+            let (bombs, isBomb) = game !! index
+
+            let y = P.div index m
+            let x = mod index n
+            let vis = espalhamento x y m n (getNum game) (getVis (length game) [])
+
+            set' style knownSquareCss btn 
+            set' style (getStyle bombs isBomb) btn
+
+            showSquares vis ((m*n)-1) w game
+            verifySquares ((m*n)-1) 0 ((m*n) - numBombs) w
+
+            return()
+
+    let generateFakeBoard :: Int -> Int -> Int -> Int -> UI()
+        generateFakeBoard (-1) m n numBombs = return ()
+        generateFakeBoard index m n numBombs = do
+            btn <- mkElement "button"
+                #. show index
+                # set style unknownSquareCss
+                # set value "false"
+
+            c <- UI.getElementsByClassName w "container" 
+            element (head c) #+ [element btn]
+            
+            on UI.focus btn $ \_ -> setBtnFocus index w
+            on UI.blur btn $ \_ -> setBtnBlur index w
+            on UI.keypress btn $ \ key -> do
+                newGame m n numBombs index
+
+            generateFakeBoard (index-1) m n numBombs
+
+    let newFakeGame :: Int -> Int -> Int -> UI()
+        newFakeGame m n numBombs = do
+            gen <- newStdGen
+            refreshContainer "container" w
+
+            c <- UI.getElementsByClassName w "container" 
+            let size = show (m * 35) ++ "px"
+            element (head c) #set style [("width", size)] --9 * 35
+
+            generateFakeBoard ((n*m)-1) m n numBombs
             return()
 
     getBody w #+ [h1 # set text "Campo Minado"]
@@ -90,15 +137,15 @@ gui w = do
     getBody w #+ [element container]
 
     on UI.click easy $ \ _ -> do    
-        newGame 9 9 10
+        newFakeGame 9 9 10
         return()
 
     on UI.click medium $ \ _ -> do    
-        newGame 16 16 40
+        newFakeGame 16 16 40
         return()
 
     on UI.click hard $ \ _ -> do    
-        newGame 20 20 100
+        newFakeGame 20 20 100
         return()
 
     return ()
