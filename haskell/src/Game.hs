@@ -1,17 +1,16 @@
-import Graphics.UI.Threepenny as UI
+module Game where
+
+import qualified Graphics.UI.Threepenny as UI
+import Graphics.UI.Threepenny.Core
 import Style
 import Espalhamento
 import GerarBombas
 import ContaBombas
 import Prelude as P
-import qualified Graphics.UI.Threepenny.Core as UI
 import System.Random (getStdGen, StdGen, newStdGen)
 
-main :: IO ()
-main = startGUI config gui
-
-gui :: Window -> UI ()
-gui w = do 
+startGui :: Window -> UI ()
+startGui w = do 
     gen <- getStdGen
     
     let startGame :: [(Int, Bool)] -> Int -> Int -> Int -> Int -> UI()
@@ -22,7 +21,7 @@ gui w = do
 
             btn <- mkElement "button"
                 #. show index
-                #+ [p # set text bombStr # set style numberCss]
+                #+ [UI.p # set text bombStr # set style numberCss]
                 # set style unknownSquareCss
                 # set value "false"
 
@@ -111,7 +110,7 @@ gui w = do
             generateFakeBoard ((n*m)-1) m n numBombs
             return()
 
-    getBody w #+ [h1 # set text "Campo Minado"]
+    getBody w #+ [UI.h1 # set text "Campo Minado"]
         # set style bodyCss
 
     -- Criando Botões de dificuldade
@@ -262,14 +261,14 @@ gameOver :: Window -> UI()
 gameOver w = do
     refreshContainer "container" w
     c <- UI.getElementsByClassName w "container" 
-    element (head c) #+ [h1 # set text "Game Over!" # set style gameOverCss]
+    element (head c) #+ [UI.h1 # set text "Game Over!" # set style gameOverCss]
     return ()
 
 victory :: Window -> UI()
 victory w = do
     refreshContainer "container" w
     c <- UI.getElementsByClassName w "container" 
-    element (head c) #+ [h1 # set text "Você Ganhou!" # set style victoryCss]
+    element (head c) #+ [UI.h1 # set text "Você Ganhou!" # set style victoryCss]
     return ()
 
 config = defaultConfig { jsLog= \ _ -> return ()}
