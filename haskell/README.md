@@ -18,21 +18,20 @@ exemplo de foto
 
 ##  Pré-requisito
 
-* ghc ver.7.6.3 
-* cabal 1.18.0.2
+* [stack](https://docs.haskellstack.org/en/stable/README/)
 
-* System.Random 
-    ```
-    cabal install random
-    ```
-* Graphics.UI.Threepenny
-    ```
-    cabal install threepenny-gui -fbuildExamples
-    ```
+##  Instalar
+
+Após instalar o stack, entrar no diretório haskel e executar os comandos:
+```
+stack install
+stack build
+```
+
 ## Inicializando o jogo
 
 ```
-ghc --make Main.hs
+stack run
 ```
 Abra o navegador em :
 ```
