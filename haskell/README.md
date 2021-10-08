@@ -10,11 +10,15 @@
 </p>
 
 ## Proposta
+
 O projeto consiste em implementar o jogo [Campo Minado](https://pt.wikipedia.org/wiki/Campo_minado) em Haskell.
 
 ## Imagens
-exemplo de foto
-
+<p>
+  <img  width="250em" src = "https://github.com/Leonardosu/CampoMinadoPLP/blob/master/Haskell/ex.png">
+  <img  width="250em" src = "https://github.com/Leonardosu/CampoMinadoPLP/blob/master/Haskell/win.png">
+  <img  width="250em" src = "https://github.com/Leonardosu/CampoMinadoPLP/blob/master/Haskell/lose.png">
+</p>
 
 ##  Pré-requisito
 
@@ -37,7 +41,8 @@ Abra o navegador em :
 ```
 localhost:8023
 ```
-
+Para revelar um quadrado, clique em cima dele e aperte uma tecla do teclado.</br>
+Para adicionar uma bandeira, clique em cima do quadrado, depois pressione a tecla ```F```
 
 ##  Funcionalidades
 
