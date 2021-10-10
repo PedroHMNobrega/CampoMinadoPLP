@@ -15,9 +15,9 @@ O projeto consiste em implementar o jogo [Campo Minado](https://pt.wikipedia.org
 
 ## Imagens
 <p>
-  <!-- <img  width="250em" src = "https://github.com/Leonardosu/CampoMinadoPLP/blob/master/Haskell/ex.png">
-  <img  width="250em" src = "https://github.com/Leonardosu/CampoMinadoPLP/blob/master/Haskell/win.png">
-  <img  width="250em" src = "https://github.com/Leonardosu/CampoMinadoPLP/blob/master/Haskell/lose.png"> -->
+  <img  height = "400em" width="250em" src = "https://github.com/PedroHMNobrega/CampoMinadoPLP/blob/master/prolog/imagens/exemplo.png">
+  <img  height = "400em" width="250em" src = "https://github.com/PedroHMNobrega/CampoMinadoPLP/blob/master/prolog/imagens/vitoria.png">
+  <img  height = "400em" width="250em" src = "https://github.com/PedroHMNobrega/CampoMinadoPLP/blob/master/prolog/imagens/derrota.png">
 </p>
 
 ##  Pré-requisito
