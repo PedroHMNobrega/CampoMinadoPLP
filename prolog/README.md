@@ -16,7 +16,6 @@ O projeto consiste em implementar o jogo [Campo Minado](https://pt.wikipedia.org
 ## Imagens
 <p>
   <img  height = "400em" width="250em" src = "https://github.com/PedroHMNobrega/CampoMinadoPLP/blob/master/prolog/imagens/exemplo.png">
-  <img  height = "400em" width="250em" src = "https://github.com/PedroHMNobrega/CampoMinadoPLP/blob/master/prolog/imagens/vitoria.png">
   <img  height = "400em" width="250em" src = "https://github.com/PedroHMNobrega/CampoMinadoPLP/blob/master/prolog/imagens/derrota.png">
 </p>
 
